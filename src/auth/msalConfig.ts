@@ -1,4 +1,4 @@
-import { Configuration } from '@azure/msal-browser';
+import type { Configuration } from '@azure/msal-browser';
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 const tenantId = import.meta.env.VITE_TENANT_ID;
@@ -25,6 +25,5 @@ export const msalConfig: Configuration = {
   },
   cache: {
     cacheLocation: 'localStorage',
-    storeAuthStateInCookie: false,
   },
 };

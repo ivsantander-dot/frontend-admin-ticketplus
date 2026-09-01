@@ -7,7 +7,8 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { instance } = useMsal();
+  // 1. Extraemos 'accounts' de useMsal()
+  const { accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
   // Verificar si el usuario está autenticado
@@ -15,11 +16,13 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-  // Verificar si el usuario tiene rol admin
-  const account = instance.getActiveAccount();
+  // 2. Tomamos la primera cuenta disponible (la sesión actual)
+  const account = accounts[0];
+  
+  // 3. Leemos los claims (información) del token
   const idTokenClaims = account?.idTokenClaims as { roles?: string[] } | undefined;
   
-  // Verificar si tiene el rol "admin"
+  // Verificar si tiene el rol exacto "admin"
   const hasAdminRole = idTokenClaims?.roles?.includes('admin');
 
   if (!hasAdminRole) {

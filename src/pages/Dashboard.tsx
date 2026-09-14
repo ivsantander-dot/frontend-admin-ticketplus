@@ -29,7 +29,7 @@ export const Dashboard = () => {
     precioDesde: 0,
   });
 
-  const apiUrl = 'http://localhost:8082/api/bff/admin/eventos';
+  const apiUrl = import.meta.env.VITE_API_URL;
   const apiScope = `api://${import.meta.env.VITE_CLIENT_ID}/access_as_user`;
 
   const obtenerToken = async () => {
@@ -43,7 +43,8 @@ export const Dashboard = () => {
   const fetchEventosSeguros = async () => {
     try {
       const token = await obtenerToken();
-      const response = await axios.get(apiUrl, {
+      // Lectura mediante el BFF público
+      const response = await axios.get(`${apiUrl}/api/bff/eventos`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEventos(response.data);
@@ -87,7 +88,7 @@ export const Dashboard = () => {
 
   const cerrarModal = () => setIsModalOpen(false);
 
-  // Operaciones de Escritura (POST, PUT, DELETE)
+  // Operaciones de Escritura (POST, PUT, DELETE) apuntando al BFF Privado de Admin
   const guardarEvento = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -95,11 +96,11 @@ export const Dashboard = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       if (eventoEditando) {
-        // Actualizar (PUT)
-        await axios.put(`${apiUrl}/${eventoEditando.id}`, formData, config);
+        // Actualizar (PUT) - Ruta Admin
+        await axios.put(`${apiUrl}/api/bff/admin/eventos/${eventoEditando.id}`, formData, config);
       } else {
-        // Crear (POST)
-        await axios.post(apiUrl, formData, config);
+        // Crear (POST) - Ruta Admin
+        await axios.post(`${apiUrl}/api/bff/admin/eventos/crear`, formData, config);
       }
       
       cerrarModal();
@@ -115,7 +116,8 @@ export const Dashboard = () => {
     
     try {
       const token = await obtenerToken();
-      await axios.delete(`${apiUrl}/${id}`, {
+      // Eliminar (DELETE) - Ruta Admin
+      await axios.delete(`${apiUrl}/api/bff/admin/eventos/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEventos(eventos.filter(e => e.id !== id));

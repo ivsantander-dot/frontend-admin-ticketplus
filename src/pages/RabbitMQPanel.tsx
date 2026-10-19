@@ -34,7 +34,7 @@ export const RabbitMQPanel = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       if (accion === 'crear') {
-        await axios.post(`${apiUrl}/api/bff/admin/queues`, { name: nombreCola }, config);
+        await axios.post(`${apiUrl}/api/bff/admin/queues`, { nombre: nombreCola }, config);
         setMensaje({ texto: `Cola '${nombreCola}' creada exitosamente en RabbitMQ.`, tipo: 'exito' });
       } else {
         await axios.delete(`${apiUrl}/api/bff/admin/queues/${nombreCola}`, config);

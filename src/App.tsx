@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
+import { RabbitMQPanel } from './pages/RabbitMQPanel'; // <-- Nueva importación
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { Layout } from './components/layout/Layout';
 
@@ -11,6 +12,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
+          
           <Route
             path="/dashboard"
             element={
@@ -21,6 +23,19 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Nueva ruta protegida para la gestión de RabbitMQ */}
+          <Route
+            path="/rabbitmq"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <RabbitMQPanel />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>

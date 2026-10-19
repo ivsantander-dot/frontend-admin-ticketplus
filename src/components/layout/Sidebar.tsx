@@ -3,12 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 export const Sidebar = () => {
   const location = useLocation();
 
-  const navItems = [
-    { path: '/dashboard', label: 'Dashboard' },
-    { path: '/usuarios', label: 'Usuarios' },
-    { path: '/eventos', label: 'Eventos' },
-    { path: '/tickets', label: 'Tickets' },
-  ];
+// Reemplaza tu arreglo navItems actual con este:
+const navItems = [
+  { path: '/dashboard', label: 'Dashboard' },
+  { path: '/usuarios', label: 'Usuarios' },
+  { path: '/eventos', label: 'Eventos' },
+  { path: '/tickets', label: 'Tickets' },
+  { path: '/rabbitmq', label: 'Colas RabbitMQ' }, // <--- Nueva ruta añadida
+];
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 p-6 border-t-4 border-orange-500">
